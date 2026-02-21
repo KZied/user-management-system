@@ -5,8 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public enum BusinessErrorCodes {
 
-    INVALID_ROLE(100, HttpStatus.BAD_REQUEST, "Invalid Role Operation"),
-    ROLE_NOT_FOUND(101, HttpStatus.NOT_FOUND, "Role not found");
+    INVALID_ROLE(100, HttpStatus.BAD_REQUEST, "Invalid Role Operation");
 
     @Getter
     private final int code;
