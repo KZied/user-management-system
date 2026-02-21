@@ -53,8 +53,4 @@ public class RoleController {
     public void deleteByName(@PathVariable String name) {
         roleService.deleteByName(name);
     }
-
-
-
-
 }

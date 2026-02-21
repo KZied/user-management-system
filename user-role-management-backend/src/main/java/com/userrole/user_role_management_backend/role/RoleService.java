@@ -1,6 +1,8 @@
 package com.userrole.user_role_management_backend.role;
 
 import com.userrole.user_role_management_backend.exception.InvalidRoleException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RoleService {
 
     private final RoleRepository roleRepository;
@@ -52,7 +55,7 @@ public class RoleService {
     public RoleResponse findById(Long id){
         return roleRepository.findById(id)
                 .map(roleMapper::toRoleResponse)
-                .orElseThrow( ()-> new InvalidRoleException("Role not found with id: " + id));
+                .orElseThrow( ()-> new EntityNotFoundException("Role not found with id: " + id));
     }
 
     public RoleResponse findByName(String name){
@@ -62,7 +65,7 @@ public class RoleService {
                 .orElseThrow(() -> new InvalidRoleException("Permitted available roles are: " + Arrays.toString(RoleType.values())));
         return roleRepository.findByName(roleNameFormatted)
                 .map(roleMapper::toRoleResponse)
-                .orElseThrow( ()-> new InvalidRoleException("Role not found with name: " + name));
+                .orElseThrow( ()-> new EntityNotFoundException("Role not found with name: " + name));
     }
 
     public void deleteAll() {
@@ -71,7 +74,7 @@ public class RoleService {
 
     public void deleteById(Long id) {
         Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new InvalidRoleException("Role not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
         roleRepository.delete(role);
     }
 
@@ -81,7 +84,7 @@ public class RoleService {
                 .findFirst()
                 .orElseThrow(() -> new InvalidRoleException("Permitted available roles are: " + Arrays.toString(RoleType.values())));
         Role role = roleRepository.findByName(roleNameFormatted)
-                .orElseThrow(() -> new InvalidRoleException("Role not found with id: " + name));
+                .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + name));
         roleRepository.delete(role);
         return roleMapper.toRoleResponse(role);
     }
